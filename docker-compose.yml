@@ -1,0 +1,40 @@
+version: '3'
+services:
+  app:
+    image: joselfonsecadt/nginx-php7.3:latest
+    volumes:
+      - ./:/var/www/html
+    links:
+      - mysql
+      - redis
+    ports:
+      - 80:80
+  scheduler:
+    image: joselfonsecadt/nginx-php7.3:latest
+    command: ./var/www/html/bin/run-scheduler.sh
+    volumes:
+      - ./:/var/www/html
+    links:
+      - mysql
+      - redis
+  horizon:
+    image: joselfonsecadt/nginx-php7.3:latest
+    command: php /var/www/html/artisan horizon
+    volumes:
+      - ./:/var/www/html
+    links:
+      - mysql
+      - redis
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: laravel
+    volumes:
+      - ./docker/mysql/data/:/var/lib/mysql
+    ports:
+      - 33060:3306
+  redis:
+    image: redis:5-alpine
+    ports:
+      - 6379:6379
