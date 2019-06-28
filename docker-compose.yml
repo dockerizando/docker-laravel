@@ -1,7 +1,7 @@
 version: '3'
 services:
   app:
-    image: joselfonsecadt/nginx-php7.3:latest
+    image: joselfonsecadt/nginx-php7.3-dev:latest
     volumes:
       - ./:/var/www/html
     links:
@@ -10,7 +10,7 @@ services:
     ports:
       - 80:80
   scheduler:
-    image: joselfonsecadt/nginx-php7.3:latest
+    image: joselfonsecadt/nginx-php7.3-dev:latest
     command: ./var/www/html/bin/run-scheduler.sh
     volumes:
       - ./:/var/www/html
@@ -33,7 +33,7 @@ services:
     volumes:
       - ./docker/mysql/data/:/var/lib/mysql
     ports:
-      - 33060:3306
+      - 3306:3306
   redis:
     image: redis:5-alpine
     ports:
